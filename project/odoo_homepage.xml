@@ -1,0 +1,1271 @@
+<t name="Homepage" t-name="website.homepage">
+  <t t-call="website.layout">
+    <t t-set="pageName" t-value="'homepage'"/>
+    
+    <!-- Custom CSS para diseño profesional -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap');
+      
+      :root {
+        --primary-orange: #ea580c;
+        --secondary-orange: #dc2626;
+        --primary-yellow: #fbbf24;
+        --secondary-yellow: #f59e0b;
+        --primary-green: #10b981;
+        --dark-green: #059669;
+        --primary-blue: #3b82f6;
+        --dark-blue: #1d4ed8;
+        --black: #111827;
+        --dark-gray: #1f2937;
+        --white: #ffffff;
+        --light-gray: #f9fafb;
+        --text-gray: #6b7280;
+      }
+      
+      * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      }
+      
+      /* Hero Section */
+      .hero-section {
+        background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        color: white;
+        padding: 80px 0;
+      }
+      
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+      
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+      }
+      
+      .gradient-text {
+        background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .gradient-text-green {
+        background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: #d1d5db;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+      
+      .hero-highlight {
+        color: var(--primary-yellow);
+        font-weight: 600;
+      }
+      
+      /* Buttons */
+      .btn-modern {
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        border: none;
+        font-size: 1.125rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        cursor: pointer;
+      }
+      
+      .btn-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        text-decoration: none;
+      }
+      
+      .btn-primary-modern {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+        color: white;
+      }
+      
+      .btn-whatsapp {
+        background: linear-gradient(135deg, #25D366, #128C7E);
+        color: white;
+      }
+      
+      .btn-secondary-modern {
+        background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+        color: white;
+      }
+      
+      /* Services Section */
+      .services-section {
+        background: linear-gradient(135deg, var(--light-gray) 0%, #e5e7eb 100%);
+        padding: 80px 0;
+      }
+      
+      .section-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      
+      .section-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-gray);
+        font-weight: 400;
+        line-height: 1.6;
+        text-align: center;
+        max-width: 48rem;
+        margin: 0 auto 3rem;
+      }
+      
+      .service-card {
+        background: linear-gradient(145deg, var(--black), var(--dark-gray));
+        border: none;
+        border-radius: 1.5rem;
+        transition: all 0.5s ease;
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        color: white;
+        padding: 2rem;
+      }
+      
+      .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        border-radius: 1.5rem;
+      }
+      
+      .service-card:hover::before {
+        opacity: 0.1;
+      }
+      
+      .service-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      }
+      
+      .service-icon {
+        width: 4rem;
+        height: 4rem;
+        background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+        transition: transform 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .service-card:hover .service-icon {
+        transform: scale(1.1);
+      }
+      
+      .service-card .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-yellow);
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .service-card .card-text {
+        color: #d1d5db;
+        font-weight: 400;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .btn-service {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        cursor: pointer;
+      }
+      
+      .btn-service:hover {
+        background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+        transform: scale(1.05);
+        color: white;
+      }
+      
+      .btn-service.btn-lab {
+        background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+      }
+      
+      .btn-service.btn-lab:hover {
+        background: linear-gradient(135deg, var(--secondary-orange), var(--primary-orange));
+      }
+      
+      /* CTA Section */
+      .cta-section {
+        background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+        color: white;
+        padding: 80px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 75% 25%, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        opacity: 0.2;
+      }
+      
+      .cta-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .cta-subtitle {
+        font-size: 1.25rem;
+        font-weight: 400;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+        max-width: 48rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .cta-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .cta-stat {
+        text-align: center;
+      }
+      
+      .cta-stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary-yellow);
+        margin-bottom: 0.5rem;
+      }
+      
+      .cta-stat-label {
+        font-size: 0.875rem;
+        opacity: 0.8;
+      }
+      
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin: 3rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .contact-card {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: white;
+        display: block;
+      }
+      
+      .contact-card:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.05);
+        color: white;
+        text-decoration: none;
+      }
+      
+      .contact-icon {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+        transition: transform 0.3s ease;
+      }
+      
+      .contact-card:hover .contact-icon {
+        transform: scale(1.1);
+      }
+      
+      .whatsapp-icon {
+        background: #25D366;
+      }
+      
+      .phone-icon {
+        background: var(--primary-blue);
+      }
+      
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-top: 3rem;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .info-section h4 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .info-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .info-section li {
+        padding: 0.25rem 0;
+        opacity: 0.9;
+      }
+      
+      /* AI Assistant */
+      .ai-chat-button {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 1000;
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      
+      .ai-chat-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+      }
+      
+      .ai-badge {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        background: #dc2626;
+        color: white;
+        font-size: 0.75rem;
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      
+      .ai-chat-window {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 1001;
+        width: 24rem;
+        max-width: calc(100vw - 2rem);
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+        display: none;
+      }
+      
+      .ai-chat-window.active {
+        display: block;
+        animation: slideUp 0.3s ease-out;
+      }
+      
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .ai-chat-header {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+        color: white;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .ai-chat-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+      
+      .ai-chat-info h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      
+      .ai-chat-info p {
+        font-size: 0.875rem;
+        opacity: 0.9;
+        margin: 0;
+      }
+      
+      .ai-chat-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.2s;
+      }
+      
+      .ai-chat-close:hover {
+        background: rgba(255,255,255,0.2);
+      }
+      
+      .ai-chat-messages {
+        height: 24rem;
+        overflow-y: auto;
+        padding: 1rem;
+        background: #f9fafb;
+      }
+      
+      .ai-message {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .ai-message.user {
+        flex-direction: row-reverse;
+      }
+      
+      .ai-message-avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+      
+      .ai-message.user .ai-message-avatar {
+        background: var(--primary-blue);
+        color: white;
+      }
+      
+      .ai-message.bot .ai-message-avatar {
+        background: var(--primary-green);
+        color: white;
+      }
+      
+      .ai-message-content {
+        max-width: 80%;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+      
+      .ai-message.user .ai-message-content {
+        background: var(--primary-blue);
+        color: white;
+        border-bottom-right-radius: 0.25rem;
+      }
+      
+      .ai-message.bot .ai-message-content {
+        background: #e5e7eb;
+        color: var(--dark-gray);
+        border-bottom-left-radius: 0.25rem;
+      }
+      
+      .ai-message-time {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        margin-top: 0.25rem;
+      }
+      
+      .ai-chat-input {
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+        background: white;
+      }
+      
+      .ai-input-container {
+        display: flex;
+        gap: 0.5rem;
+      }
+      
+      .ai-input-container textarea {
+        flex: 1;
+        border: 1px solid #d1d5db;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        resize: none;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      
+      .ai-input-container textarea:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+      
+      .ai-send-button {
+        background: var(--primary-green);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .ai-send-button:hover:not(:disabled) {
+        background: var(--dark-green);
+      }
+      
+      .ai-send-button:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+      }
+      
+      .ai-disclaimer {
+        font-size: 0.75rem;
+        color: var(--text-gray);
+        text-align: center;
+        margin-top: 0.5rem;
+      }
+      
+      .ai-typing {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      
+      .ai-typing-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #9ca3af;
+        border-radius: 50%;
+        animation: typing 1.4s infinite ease-in-out;
+      }
+      
+      .ai-typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      
+      .ai-typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      
+      @keyframes typing {
+        0%, 60%, 100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-10px);
+        }
+      }
+      
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+        
+        .section-title {
+          font-size: 2rem;
+        }
+        
+        .btn-modern {
+          padding: 0.75rem 1.5rem;
+          font-size: 1rem;
+        }
+        
+        .ai-chat-window {
+          width: calc(100vw - 2rem);
+          bottom: 1rem;
+          right: 1rem;
+        }
+      }
+    </style>
+    
+    <div id="wrap" class="oe_structure">
+      
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="mb-4">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                  ❤️ CLÍNICA VETERINARIA ANIMAL SWEET
+                </span>
+              </div>
+              
+              <h1 class="hero-title">
+                <span class="gradient-text">Cuidamos</span><br/>
+                <span class="text-white">a tu mejor</span><br/>
+                <span class="gradient-text-green">amigo</span>
+              </h1>
+              
+              <p class="hero-subtitle">
+                Atención veterinaria profesional <span class="hero-highlight">a domicilio</span> y en clínica. 
+                Brindamos cuidado integral con la comodidad que tu mascota merece.
+              </p>
+              
+              <div class="d-flex flex-column flex-sm-row gap-3 mb-4">
+                <a href="#servicios" class="btn btn-modern btn-primary-modern">
+                  📅 Agendar Cita Online
+                </a>
+                <a href="https://wa.me/573127396409" target="_blank" class="btn btn-modern btn-whatsapp">
+                  📱 WhatsApp
+                </a>
+              </div>
+              
+              <div class="d-flex align-items-center gap-4 text-sm">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-success">🛡️</span>
+                  <span class="text-light">Médicos Certificados</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-danger">❤️</span>
+                  <span class="text-light">Servicio a Domicilio</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-6">
+              <div class="position-relative">
+                <img src="https://images.pexels.com/photos/6235488/pexels-photo-6235488.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=1" 
+                     alt="Veterinario profesional con mascota" 
+                     class="img-fluid rounded-4 shadow-lg"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section id="servicios" class="services-section">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center mb-5">
+              <div class="badge bg-success text-white px-3 py-2 rounded-pill mb-3">
+                📅 NUESTROS SERVICIOS PROFESIONALES
+              </div>
+              
+              <h2 class="section-title">
+                <span class="gradient-text">Servicios Veterinarios</span><br/>
+                <span class="text-dark">de Clase Mundial</span>
+              </h2>
+              
+              <p class="section-subtitle">
+                En Animal Sweet ofrecemos atención veterinaria integral con tecnología de vanguardia y 
+                el trato humano que tu mascota merece. Cada servicio está diseñado para garantizar el 
+                bienestar y la felicidad de tu compañero de vida.
+              </p>
+              
+              <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
+                <a href="#servicios" class="btn btn-modern btn-primary-modern">
+                  📅 Agendar Cita Online
+                </a>
+                <a href="https://wa.me/573127396409" target="_blank" class="btn btn-modern btn-whatsapp">
+                  📱 Consultar por WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- Consulta Veterinaria -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🩺</div>
+                <h5 class="card-title">Consulta Veterinaria Integral</h5>
+                <p class="card-text">
+                  Evaluación completa del estado de salud de tu mascota con diagnóstico profesional y plan de tratamiento personalizado.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Examen físico completo</li>
+                  <li>• Diagnóstico profesional</li>
+                  <li>• Plan de tratamiento personalizado</li>
+                  <li>• Seguimiento post-consulta</li>
+                </ul>
+                <button class="btn btn-service">Agendar Consulta</button>
+              </div>
+            </div>
+
+            <!-- Vacunación -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">💉</div>
+                <h5 class="card-title">Vacunación y Desparasitación</h5>
+                <p class="card-text">
+                  Protección integral con vacunas de alta calidad y desparasitación efectiva según el calendario sanitario.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Vacunas de alta calidad</li>
+                  <li>• Según calendario sanitario</li>
+                  <li>• Sin estrés para tu mascota</li>
+                  <li>• Certificado de vacunación</li>
+                </ul>
+                <button class="btn btn-service">Agendar Vacunación</button>
+              </div>
+            </div>
+
+            <!-- Laboratorio -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🧪</div>
+                <h5 class="card-title">Laboratorio Clínico Especializado</h5>
+                <p class="card-text">
+                  Análisis clínicos completos con tecnología de vanguardia para diagnósticos precisos y tratamientos efectivos.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Análisis completos</li>
+                  <li>• Resultados rápidos y precisos</li>
+                  <li>• Tecnología de vanguardia</li>
+                  <li>• Interpretación profesional</li>
+                </ul>
+                <button class="btn btn-service btn-lab">Solicitar Laboratorio</button>
+              </div>
+            </div>
+
+            <!-- Odontología -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🦷</div>
+                <h5 class="card-title">Odontología Veterinaria</h5>
+                <p class="card-text">
+                  Cuidado dental especializado con limpiezas profesionales, extracciones y tratamientos preventivos.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Limpiezas dentales profesionales</li>
+                  <li>• Extracciones especializadas</li>
+                  <li>• Tratamientos preventivos</li>
+                  <li>• Salud bucal óptima</li>
+                </ul>
+                <button class="btn btn-service">Agendar Odontología</button>
+              </div>
+            </div>
+
+            <!-- Cardiología -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">❤️</div>
+                <h5 class="card-title">Cardiología Veterinaria</h5>
+                <p class="card-text">
+                  Diagnóstico y tratamiento especializado de enfermedades cardíacas con equipos de última generación.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Electrocardiogramas</li>
+                  <li>• Ecocardiografías</li>
+                  <li>• Tratamientos especializados</li>
+                  <li>• Seguimiento cardíaco</li>
+                </ul>
+                <button class="btn btn-service">Agendar Cardiología</button>
+              </div>
+            </div>
+
+            <!-- Dermatología -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🌿</div>
+                <h5 class="card-title">Dermatología Veterinaria</h5>
+                <p class="card-text">
+                  Tratamiento especializado de problemas de piel, alergias e infecciones cutáneas con terapias avanzadas.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Tratamiento de alergias</li>
+                  <li>• Terapias dermatológicas</li>
+                  <li>• Análisis de piel especializado</li>
+                  <li>• Planes de tratamiento largos</li>
+                </ul>
+                <button class="btn btn-service">Agendar Dermatología</button>
+              </div>
+            </div>
+
+            <!-- Nutrición -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🥗</div>
+                <h5 class="card-title">Nutrición y Dietética</h5>
+                <p class="card-text">
+                  Planes nutricionales personalizados para cada etapa de vida, con seguimiento profesional continuo.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Planes nutricionales personalizados</li>
+                  <li>• Según etapa de vida</li>
+                  <li>• Seguimiento profesional</li>
+                  <li>• Educación nutricional</li>
+                </ul>
+                <button class="btn btn-service">Consultar Nutrición</button>
+              </div>
+            </div>
+
+            <!-- Peluquería -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">✂️</div>
+                <h5 class="card-title">Estética y Peluquería</h5>
+                <p class="card-text">
+                  Servicios de belleza profesional con baños terapéuticos, cortes especializados y cuidado estético integral.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Baños terapéuticos</li>
+                  <li>• Cortes especializados</li>
+                  <li>• Productos de alta calidad</li>
+                  <li>• Cuidado estético integral</li>
+                </ul>
+                <button class="btn btn-service">Agendar Peluquería</button>
+              </div>
+            </div>
+
+            <!-- Servicio a Domicilio -->
+            <div class="col">
+              <div class="service-card">
+                <div class="service-icon">🏡</div>
+                <h5 class="card-title">Atención a Domicilio Premium</h5>
+                <p class="card-text">
+                  Servicio veterinario completo en la comodidad de tu hogar, eliminando el estrés del transporte.
+                </p>
+                <ul class="list-unstyled mb-4 text-light small">
+                  <li>• Sin estrés de transporte</li>
+                  <li>• Comodidad total</li>
+                  <li>• Atención personalizada</li>
+                  <li>• Equipos profesionales portátiles</li>
+                </ul>
+                <button class="btn btn-service">Solicitar Visita</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom CTA -->
+          <div class="row mt-5">
+            <div class="col">
+              <div class="text-center p-5 rounded-4 text-white" style="background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));">
+                <h3 class="h2 fw-bold mb-3">¿No encuentras el servicio que necesitas?</h3>
+                <p class="fs-5 mb-4 opacity-90">
+                  Contáctanos y te ayudaremos a encontrar la solución perfecta para tu mascota
+                </p>
+                <a href="https://wa.me/573127396409" target="_blank" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+                  📱 Contactar Ahora
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <div class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-4">
+                📞 ¡CONTACTA AHORA!
+              </div>
+              
+              <h2 class="cta-title">
+                Tu mascota merece<br/>
+                <span style="background: linear-gradient(135deg, var(--primary-yellow), #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                  la mejor atención
+                </span>
+              </h2>
+              
+              <p class="cta-subtitle">
+                Agenda tu cita hoy mismo y descubre por qué somos la clínica veterinaria 
+                más confiable de la región. Tu tranquilidad y la salud de tu mascota son nuestra prioridad.
+              </p>
+              
+              <div class="cta-stats">
+                <div class="cta-stat">
+                  <div class="cta-stat-number">500+</div>
+                  <div class="cta-stat-label">Mascotas Felices</div>
+                </div>
+                <div class="cta-stat">
+                  <div class="cta-stat-number">24/7</div>
+                  <div class="cta-stat-label">Emergencias</div>
+                </div>
+                <div class="cta-stat">
+                  <div class="cta-stat-number">5⭐</div>
+                  <div class="cta-stat-label">Calificación</div>
+                </div>
+                <div class="cta-stat">
+                  <div class="cta-stat-number">3+</div>
+                  <div class="cta-stat-label">Años de Experiencia</div>
+                </div>
+              </div>
+              
+              <div class="contact-grid">
+                <a href="https://wa.me/573012908253" target="_blank" class="contact-card">
+                  <div class="contact-icon whatsapp-icon">📱</div>
+                  <h4 class="h5 fw-bold mb-2">WhatsApp</h4>
+                  <p class="mb-0 opacity-90">Respuesta inmediata</p>
+                  <p class="small mb-0">Chatea con nosotros ahora y agenda tu cita en segundos</p>
+                </a>
+                
+                <a href="tel:+573012908253" class="contact-card">
+                  <div class="contact-icon phone-icon">📞</div>
+                  <h4 class="h5 fw-bold mb-2">Teléfono</h4>
+                  <p class="mb-0 opacity-90">312-739-6409</p>
+                  <p class="small mb-0">Llámanos para emergencias o consultas urgentes</p>
+                </a>
+              </div>
+              
+              <div class="info-grid">
+                <div class="info-section">
+                  <h4>🕒 Horarios de Atención</h4>
+                  <ul>
+                    <li>• Lunes a Viernes: 8:00 AM - 6:00 PM</li>
+                    <li>• Sábados: 8:00 AM - 4:00 PM</li>
+                    <li>• Domingos: Solo emergencias</li>
+                    <li>• Emergencias: 24/7</li>
+                  </ul>
+                </div>
+                
+                <div class="info-section">
+                  <h4>📍 Zona de Cobertura</h4>
+                  <ul>
+                    <li>• Servicio a domicilio en toda la ciudad</li>
+                    <li>• Consultas virtuales disponibles</li>
+                    <li>• Transporte de emergencia incluido</li>
+                    <li>• Cobertura 24/7 para urgencias</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="mt-5">
+                <p class="fs-5 opacity-90 mb-4">
+                  ¿Listo para brindarle a tu mascota el cuidado que merece?
+                </p>
+                <a href="https://wa.me/573127396409" target="_blank" class="btn btn-modern btn-secondary-modern btn-lg">
+                  📱 ¡Agenda tu Cita Ahora!
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- AI Assistant Chat -->
+    <button class="ai-chat-button" onclick="toggleAIChat()">
+      🤖
+      <span class="ai-badge">IA</span>
+    </button>
+
+    <div class="ai-chat-window" id="aiChatWindow">
+      <div class="ai-chat-header">
+        <div class="d-flex align-items-center">
+          <div class="ai-chat-avatar">🤖</div>
+          <div class="ai-chat-info">
+            <h3>Dr. Virtual</h3>
+            <p>Asistente Veterinario IA</p>
+          </div>
+        </div>
+        <button class="ai-chat-close" onclick="toggleAIChat()">✕</button>
+      </div>
+      
+      <div class="ai-chat-messages" id="aiChatMessages">
+        <div class="ai-message bot">
+          <div class="ai-message-avatar">🤖</div>
+          <div class="ai-message-content">
+            ¡Hola! Soy Dr. Virtual, tu asistente de consulta veterinaria. ¿En qué puedo ayudarte con tu mascota hoy?
+            <div class="ai-message-time" id="initialTime"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ai-chat-input">
+        <div class="ai-input-container">
+          <textarea id="aiInput" placeholder="Describe los síntomas de tu mascota..." rows="2" onkeypress="handleAIKeyPress(event)"></textarea>
+          <button class="ai-send-button" onclick="sendAIMessage()" id="aiSendButton">
+            ➤
+          </button>
+        </div>
+        <p class="ai-disclaimer">
+          ⚠️ Esta es una consulta preliminar. Para diagnósticos precisos, agenda una cita presencial.
+        </p>
+      </div>
+    </div>
+
+    <!-- JavaScript para AI Assistant -->
+    <script>
+      // Initialize AI Chat
+      document.addEventListener('DOMContentLoaded', function() {
+        const initialTime = document.getElementById('initialTime');
+        if (initialTime) {
+          initialTime.textContent = new Date().toLocaleTimeString('es-ES', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          });
+        }
+      });
+
+      let aiChatOpen = false;
+      let isAITyping = false;
+
+      function toggleAIChat() {
+        const chatWindow = document.getElementById('aiChatWindow');
+        const chatButton = document.querySelector('.ai-chat-button');
+        
+        aiChatOpen = !aiChatOpen;
+        
+        if (aiChatOpen) {
+          chatWindow.classList.add('active');
+          chatButton.style.display = 'none';
+        } else {
+          chatWindow.classList.remove('active');
+          chatButton.style.display = 'flex';
+        }
+      }
+
+      function handleAIKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          sendAIMessage();
+        }
+      }
+
+      async function sendAIMessage() {
+        const input = document.getElementById('aiInput');
+        const message = input.value.trim();
+        
+        if (!message || isAITyping) return;
+        
+        // Add user message
+        addAIMessage(message, true);
+        input.value = '';
+        
+        // Show typing indicator
+        showAITyping();
+        
+        try {
+          // Simulate AI response
+          const response = await getAIResponse(message);
+          hideAITyping();
+          addAIMessage(response, false);
+        } catch (error) {
+          hideAITyping();
+          addAIMessage('Lo siento, hubo un error. Por favor, intenta nuevamente o contacta directamente con nuestra clínica.', false);
+        }
+      }
+
+      function addAIMessage(text, isUser) {
+        const messagesContainer = document.getElementById('aiChatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${isUser ? 'user' : 'bot'}`;
+        
+        const currentTime = new Date().toLocaleTimeString('es-ES', { 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        });
+        
+        messageDiv.innerHTML = `
+          <div class="ai-message-avatar">${isUser ? '👤' : '🤖'}</div>
+          <div class="ai-message-content">
+            ${text}
+            <div class="ai-message-time">${currentTime}</div>
+          </div>
+        `;
+        
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      function showAITyping() {
+        isAITyping = true;
+        const messagesContainer = document.getElementById('aiChatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'ai-message bot';
+        typingDiv.id = 'typingIndicator';
+        
+        typingDiv.innerHTML = `
+          <div class="ai-message-avatar">🤖</div>
+          <div class="ai-message-content">
+            <div class="ai-typing">
+              <div class="ai-typing-dot"></div>
+              <div class="ai-typing-dot"></div>
+              <div class="ai-typing-dot"></div>
+            </div>
+          </div>
+        `;
+        
+        messagesContainer.appendChild(typingDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        document.getElementById('aiSendButton').disabled = true;
+      }
+
+      function hideAITyping() {
+        isAITyping = false;
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+        document.getElementById('aiSendButton').disabled = false;
+      }
+
+      async function getAIResponse(userMessage) {
+        // Simulate AI thinking time
+        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+        
+        const responses = {
+          greetings: [
+            '¡Hola! Estoy aquí para ayudarte con consultas sobre la salud de tu mascota.',
+            '¡Bienvenido/a! ¿Cómo está tu mascota hoy?'
+          ],
+          symptoms: [
+            'Los síntomas que describes podrían indicar varias condiciones. Te recomiendo agendar una consulta presencial para un diagnóstico preciso.',
+            'Es importante que un veterinario examine a tu mascota en persona. Mientras tanto, mantén a tu mascota cómoda y observa cualquier cambio.'
+          ],
+          emergency: [
+            '🚨 Si es una emergencia, contacta inmediatamente a nuestro servicio de urgencias al 301-290-8253 o acude al centro veterinario más cercano.',
+            'Para situaciones urgentes, no dudes en llamarnos. Estamos disponibles para emergencias las 24 horas.'
+          ],
+          appointment: [
+            'Puedes agendar tu cita online haciendo clic en "Agendar Cita" o contactándonos por WhatsApp. ¿Qué tipo de consulta necesitas?',
+            'Te ayudo a programar tu cita. ¿Prefieres consulta a domicilio o en clínica? ¿Qué servicio específico necesitas?'
+          ],
+          general: [
+            'Basándome en tu consulta, te recomiendo que programes una cita para una evaluación completa. Cada mascota es única y requiere atención personalizada.',
+            'Para darte la mejor recomendación, necesitaría más detalles. Te sugiero agendar una consulta donde podamos evaluar a tu mascota adecuadamente.'
+          ]
+        };
+
+        const lowerMessage = userMessage.toLowerCase();
+        
+        if (lowerMessage.includes('hola') || lowerMessage.includes('hello') || lowerMessage.includes('buenas')) {
+          return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+        }
+        
+        if (lowerMessage.includes('emergencia') || lowerMessage.includes('urgente') || lowerMessage.includes('grave')) {
+          return responses.emergency[Math.floor(Math.random() * responses.emergency.length)];
+        }
+        
+        if (lowerMessage.includes('cita') || lowerMessage.includes('agenda') || lowerMessage.includes('turno')) {
+          return responses.appointment[Math.floor(Math.random() * responses.appointment.length)];
+        }
+        
+        if (lowerMessage.includes('síntoma') || lowerMessage.includes('enfermo') || lowerMessage.includes('dolor') || lowerMessage.includes('vomito') || lowerMessage.includes('diarrea')) {
+          return responses.symptoms[Math.floor(Math.random() * responses.symptoms.length)];
+        }
+        
+        return responses.general[Math.floor(Math.random() * responses.general.length)];
+      }
+    </script>
+  </t>
+</t>
