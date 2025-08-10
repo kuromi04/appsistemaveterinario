@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, User, Calendar, FileText, Users, Settings, Menu, X, Moon, Sun, List, DollarSign, Clock, Edit, BarChart3 } from 'lucide-react';
+import { LogOut, User, Calendar, FileText, Settings, Menu, X, Moon, Sun, List, DollarSign, Clock, Edit, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 

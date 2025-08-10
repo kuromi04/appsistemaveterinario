@@ -1,26 +1,21 @@
 import React, { useState, useMemo } from 'react';
 import { useData } from '../contexts/DataContext';
 import { 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  Calendar, 
-  Download, 
-  Filter,
-  Users,
-  Activity,
-  DollarSign,
-  Pill,
-  Clock,
-  AlertTriangle,
-  Target,
-  Zap,
-  PieChart,
-  LineChart,
-  BarChart,
-  FileText,
-  RefreshCw
-} from 'lucide-react';
+    BarChart3,
+    TrendingUp,
+    Download,
+    Users,
+    Activity,
+    DollarSign,
+    Pill,
+    AlertTriangle,
+    Target,
+    Zap,
+    PieChart,
+    LineChart,
+    RefreshCw,
+    CheckCircle
+  } from 'lucide-react';
 import { format, subDays, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import LoadingSpinner from './LoadingSpinner';
@@ -604,7 +599,7 @@ const AdvancedReports: React.FC = () => {
           </h3>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {speciesAnalysis.map((species, index) => (
+              {speciesAnalysis.map((species) => (
               <div key={species.species} className="border border-gray-200 dark:border-dark-600 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-medium text-gray-900 dark:text-white">{species.species}</h4>

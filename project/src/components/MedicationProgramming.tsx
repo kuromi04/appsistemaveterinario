@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
-import { Clock, Calendar, Search, Filter, AlertCircle, CheckCircle, XCircle, Pill, User, Dog, Plus, Eye, Edit, Trash2, Save, X, Timer, UserCheck, DollarSign } from 'lucide-react';
-import { format, isToday, parseISO, differenceInMinutes, addMinutes, subMinutes, isAfter, isBefore, startOfDay, endOfDay, addDays, isSameDay } from 'date-fns';
+import { Clock, Calendar, Search, AlertCircle, CheckCircle, XCircle, Pill, Dog, Plus, Edit, Trash2, Save, X, Timer, UserCheck, DollarSign } from 'lucide-react';
+import { format, differenceInMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
 import LoadingSpinner from './LoadingSpinner';
 import MedicationForm from './MedicationForm';
@@ -10,19 +10,18 @@ import AdministrationForm from './AdministrationForm';
 
 const MedicationProgramming: React.FC = () => {
   const { user } = useAuth();
-  const { 
-    patients, 
-    medications, 
-    administrations, 
-    medicationCosts,
-    loading,
-    getMedicationsByPatient,
-    getAdministrationsByPatient,
-    updateMedication,
-    deleteMedication,
-    addKardexEntry,
-    addAdministration
-  } = useData();
+    const {
+      patients,
+      administrations,
+      medicationCosts,
+      loading,
+      getMedicationsByPatient,
+      getAdministrationsByPatient,
+      updateMedication,
+      deleteMedication,
+      addKardexEntry,
+      addAdministration
+    } = useData();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'administered' | 'overdue' | 'late'>('all');

@@ -38,7 +38,7 @@ const Login: React.FC = () => {
             Sistema Veterinario
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Inicia sesión en tu cuenta
+            {isSupabaseConfigured() ? 'Inicia sesión en tu cuenta' : 'Modo demo: autenticación local'}
           </p>
         </div>
 

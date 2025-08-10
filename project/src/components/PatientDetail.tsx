@@ -3,11 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
 import { 
-  ArrowLeft, Edit, Trash2, Plus, FileText, DollarSign, 
-  Pill, Calendar, User, Phone, Mail, MapPin, Heart,
-  Activity, Clock, AlertCircle, CheckCircle, Camera,
-  Download, Upload, Eye, X
-} from 'lucide-react';
+    ArrowLeft, Edit, Trash2, Plus, FileText, DollarSign,
+    Pill, User, Phone, Mail, MapPin, Heart,
+    Activity, AlertCircle, CheckCircle, Camera,
+    Download, Upload, Eye, X
+  } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import MedicationForm from './MedicationForm';
@@ -32,7 +32,6 @@ const PatientDetail: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'overview' | 'medications' | 'kardex' | 'budget' | 'files'>('overview');
   const [showMedicationForm, setShowMedicationForm] = useState(false);
   const [showAdministrationForm, setShowAdministrationForm] = useState(false);
-  const [showBudgetManager, setShowBudgetManager] = useState(false);
   const [showFileManager, setShowFileManager] = useState(false);
   const [selectedMedication, setSelectedMedication] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);

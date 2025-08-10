@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
-import { supabase, isSupabaseConfigured, handleSupabaseError } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, handleSupabaseError, testSupabaseConnection } from '../lib/supabase';
 import { Patient, Medication, Administration, KardexEntry, BudgetTransaction, PatientFile } from '../types';
 import { patients as mockPatients, medications as mockMedications, administrations as mockAdministrations, kardexEntries as mockKardexEntries } from '../data/mockData';
 
-import { validateUserInput, sanitizeString } from '../utils/inputValidation';
+import { sanitizeString } from '../utils/inputValidation';
 
 interface MedicationCost {
   id: string;
@@ -90,7 +90,6 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [error, setError] = useState<string | null>(null);
   const [errorHistory, setErrorHistory] = useState<ErrorInfo[]>([]);
   const [lastFailedOperation, setLastFailedOperation] = useState<(() => Promise<void>) | null>(null);
-  const [operationQueue, setOperationQueue] = useState<Array<() => Promise<void>>>([]);
 
   // Probar conexión a Supabase al inicializar
   useEffect(() => {
@@ -300,11 +299,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setMedicationCosts(costsData || []);
 
       console.log('Datos actualizados desde Supabase');
-    } catch (error) {
+    } catch (error: unknown) {
       setLastFailedOperation(() => refreshData);
-      
+
       // Si hay error de conexión, cambiar a modo demostración
-      if (error && typeof error.message === 'string' && error.message.includes('Failed to fetch')) {
+      if (error instanceof Error && error.message.includes('Failed to fetch')) {
         console.warn('Error de conexión a Supabase, cambiando a modo demostración:', error);
         setSupabaseAvailable(false);
         addError('network', 'Conectado en modo demostración - Supabase no disponible', 'refreshData');
@@ -467,13 +466,15 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       return { success: true, data: newPatient };
-    } catch (error) {
-      console.error('Error agregando paciente:', error);
-      setLastFailedOperation(() => addPatient(patientData));
-      addError('database', handleSupabaseError(error), 'addPatient');
-      return { success: false, error: handleSupabaseError(error) };
-    }
-  };
+      } catch (error) {
+        console.error('Error agregando paciente:', error);
+        setLastFailedOperation(() => async () => {
+          await addPatient(patientData);
+        });
+        addError('database', handleSupabaseError(error), 'addPatient');
+        return { success: false, error: handleSupabaseError(error) };
+      }
+    };
 
   const updatePatient = async (id: string, updates: Partial<Patient>) => {
     try {
@@ -512,13 +513,15 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setPatients(prev => prev.map(p => p.id === id ? { ...p, ...updates, updated_at: new Date().toISOString() } : p));
       
       return { success: true };
-    } catch (error) {
-      console.error('Error actualizando paciente:', error);
-      setLastFailedOperation(() => updatePatient(id, updates));
-      addError('database', handleSupabaseError(error), 'updatePatient');
-      return { success: false, error: handleSupabaseError(error) };
-    }
-  };
+      } catch (error) {
+        console.error('Error actualizando paciente:', error);
+        setLastFailedOperation(() => async () => {
+          await updatePatient(id, updates);
+        });
+        addError('database', handleSupabaseError(error), 'updatePatient');
+        return { success: false, error: handleSupabaseError(error) };
+      }
+    };
 
   const deletePatient = async (id: string) => {
     try {
@@ -553,14 +556,16 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       setLoading(false);
       return { success: true };
-    } catch (error) {
-      console.error('Error eliminando paciente:', error);
-      setLastFailedOperation(() => deletePatient(id));
-      addError('database', handleSupabaseError(error), 'deletePatient');
-      setLoading(false);
-      return { success: false, error: handleSupabaseError(error) };
-    }
-  };
+      } catch (error) {
+        console.error('Error eliminando paciente:', error);
+        setLastFailedOperation(() => async () => {
+          await deletePatient(id);
+        });
+        addError('database', handleSupabaseError(error), 'deletePatient');
+        setLoading(false);
+        return { success: false, error: handleSupabaseError(error) };
+      }
+    };
 
   const addMedication = async (medicationData: Omit<Medication, 'id' | 'prescribed_at' | 'created_at' | 'updated_at'>) => {
     const id = crypto.randomUUID();
@@ -614,7 +619,9 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return id;
     } catch (error) {
       console.error('Error agregando medicación:', error);
-      setLastFailedOperation(() => addMedication(medicationData));
+      setLastFailedOperation(() => async () => {
+        await addMedication(medicationData);
+      });
       addError('database', handleSupabaseError(error), 'addMedication');
       throw new Error(`Error guardando medicación: ${handleSupabaseError(error)}`);
     }
@@ -715,15 +722,17 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         created_at: new Date().toISOString()
       };
 
-      setAdministrations(prev => [newAdministration, ...prev]);
-      return id;
-    } catch (error) {
-      console.error('Error agregando administración:', error);
-      setLastFailedOperation(() => addAdministration(administrationData));
-      addError('database', handleSupabaseError(error), 'addAdministration');
-      throw new Error(`Error guardando administración: ${handleSupabaseError(error)}`);
-    }
-  };
+        setAdministrations(prev => [newAdministration, ...prev]);
+        return id;
+      } catch (error) {
+        console.error('Error agregando administración:', error);
+        setLastFailedOperation(() => async () => {
+          await addAdministration(administrationData);
+        });
+        addError('database', handleSupabaseError(error), 'addAdministration');
+        throw new Error(`Error guardando administración: ${handleSupabaseError(error)}`);
+      }
+    };
 
   const updateAdministration = (id: string, updates: Partial<Administration>) => {
     if (isSupabaseConfigured() && supabase && supabaseAvailable) {
@@ -793,7 +802,9 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return id;
     } catch (error) {
       console.error('Error agregando entrada de kardex:', error);
-      setLastFailedOperation(() => addKardexEntry(entryData));
+      setLastFailedOperation(() => async () => {
+        await addKardexEntry(entryData);
+      });
       addError('database', handleSupabaseError(error), 'addKardexEntry');
       throw new Error(`Error guardando entrada de kardex: ${handleSupabaseError(error)}`);
     }
@@ -841,23 +852,25 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         created_at: new Date().toISOString()
       };
 
-      setBudgetTransactions(prev => [newTransaction, ...prev]);
+        setBudgetTransactions(prev => [newTransaction, ...prev]);
 
-      // Actualizar historial del paciente
-      setPatients(prev => prev.map(p => 
-        p.id === transactionData.patient_id 
-          ? { ...p, budget_history: [...p.budget_history, newTransaction] }
-          : p
-      ));
+        // Actualizar historial del paciente
+        setPatients(prev => prev.map(p =>
+          p.id === transactionData.patient_id
+            ? { ...p, budget_history: [...p.budget_history, newTransaction] }
+            : p
+        ));
 
-      return id;
-    } catch (error) {
-      console.error('Error agregando transacción:', error);
-      setLastFailedOperation(() => addBudgetTransaction(transactionData));
-      addError('database', handleSupabaseError(error), 'addBudgetTransaction');
-      throw new Error(`Error guardando transacción: ${handleSupabaseError(error)}`);
-    }
-  };
+        return id;
+      } catch (error) {
+        console.error('Error agregando transacción:', error);
+        setLastFailedOperation(() => async () => {
+          await addBudgetTransaction(transactionData);
+        });
+        addError('database', handleSupabaseError(error), 'addBudgetTransaction');
+        throw new Error(`Error guardando transacción: ${handleSupabaseError(error)}`);
+      }
+    };
 
   const addPatientFile = (fileData: Omit<PatientFile, 'id' | 'uploaded_at'>) => {
     const id = crypto.randomUUID();

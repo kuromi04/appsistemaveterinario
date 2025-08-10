@@ -1,13 +1,11 @@
 import React from 'react';
 import { 
-  Heart, 
-  Phone, 
-  MessageCircle, 
-  MapPin, 
-  Clock,
-  Star,
-  ArrowUp
-} from 'lucide-react';
+    Phone,
+    MessageCircle,
+    MapPin,
+    Star,
+    ArrowUp
+  } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const scrollToTop = () => {

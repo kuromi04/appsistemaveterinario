@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Save, X, Plus, Search, Clock, Calendar } from 'lucide-react';
+import { Save, X, Search, Clock, Calendar } from 'lucide-react';
 
 interface MedicationFormProps {
   patientId: string;

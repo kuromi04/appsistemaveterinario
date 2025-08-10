@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Plus, Search, Filter, Edit, Trash2, Eye, AlertCircle, CheckCircle, X, User, Calendar, DollarSign } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Trash2, AlertCircle, User } from 'lucide-react';
 import PatientForm from './PatientForm';
 import { Patient } from '../types';
 import LoadingSpinner from './LoadingSpinner';

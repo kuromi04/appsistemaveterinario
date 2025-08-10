@@ -299,7 +299,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       
-      const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabase!.auth.signUp({
         email,
         password,
         options: {
@@ -321,9 +321,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Crear perfil manualmente si no se creó automáticamente
         if (data.user.id) {
           try {
-            const { error: profileError } = await supabase
-              .from('profiles')
-              .insert({
+              const { error: profileError } = await supabase!
+                .from('profiles')
+                .insert({
                 id: data.user.id,
                 name: userData.name,
                 role: userData.role,
@@ -374,10 +374,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       setLoading(true);
       
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+        const { error } = await supabase!.auth.signInWithPassword({
+          email,
+          password
+        });
 
       if (error) {
         console.error('SignIn error:', error);

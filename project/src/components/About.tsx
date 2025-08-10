@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, Award, Heart, Users, Clock, MapPin, CheckCircle } from 'lucide-react';
+import { Shield, Award, Heart, Clock, MapPin, CheckCircle } from 'lucide-react';
 
 const About: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
