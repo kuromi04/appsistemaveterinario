@@ -24,10 +24,14 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
   // Obtener la fecha y hora actual en formato local
   const getCurrentLocalDateTime = () => {
     const now = new Date();
-    // Ajustar a zona horaria local
-    const offset = now.getTimezoneOffset();
-    const localTime = new Date(now.getTime() - (offset * 60 * 1000));
-    return localTime.toISOString().slice(0, 16);
+    // Formatear directamente en zona horaria local
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const [formData, setFormData] = useState({
@@ -77,10 +81,15 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
 
     // Validar fechas del tratamiento
     const adminDate = new Date(formData.administered_at);
-    const startDate = new Date(medication.start_date);
-    const endDate = new Date(medication.end_date);
+    const startDate = new Date(medication.start_date.includes('T') ? medication.start_date : medication.start_date + 'T00:00:00');
+    const endDate = new Date(medication.end_date.includes('T') ? medication.end_date : medication.end_date + 'T23:59:59');
 
-    if (adminDate < startDate || adminDate > endDate) {
+    // Comparar solo fechas, no horas para el rango de tratamiento
+    const adminDateOnly = new Date(adminDate.getFullYear(), adminDate.getMonth(), adminDate.getDate());
+    const startDateOnly = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const endDateOnly = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+    if (adminDateOnly < startDateOnly || adminDateOnly > endDateOnly) {
       setError('La fecha de administración debe estar dentro del período de tratamiento');
       return;
     }
@@ -121,16 +130,22 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
     setError(null);
 
     try {
+      // Convertir a formato ISO manteniendo zona horaria local
+      const adminISOString = new Date(adminDate.getTime() - (adminDate.getTimezoneOffset() * 60000)).toISOString();
+      const scheduledISOString = closestScheduledTime ? 
+        new Date(closestScheduledTime.getTime() - (closestScheduledTime.getTimezoneOffset() * 60000)).toISOString() : 
+        null;
+
       await addAdministration({
         medication_id: medicationId,
         patient_id: patientId,
         administered_by: user.id,
-        administered_at: formData.administered_at,
+        administered_at: adminISOString,
         dose: formData.dose,
         notes: formData.notes,
         status: formData.status,
         cost: formData.cost,
-        scheduled_time: closestScheduledTime?.toISOString() || null,
+        scheduled_time: scheduledISOString,
         timing_status: timingStatus
       });
 

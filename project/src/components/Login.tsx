@@ -141,42 +141,6 @@ const Login: React.FC = () => {
           </div>
         </form>
 
-        <div className="mt-8 text-center">
-          {isSupabaseConfigured() ? (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-green-800 mb-2">
-                ✨ ¿Primera vez en el sistema?
-              </h3>
-              <div className="text-xs text-green-700 space-y-2">
-                <p>
-                  <strong>1.</strong> Haz clic en <strong>"Regístrate aquí"</strong> arriba para crear tu cuenta
-                </p>
-                <p>
-                  <strong>2.</strong> Completa el formulario con tus datos
-                </p>
-                <p>
-                  <strong>3.</strong> Luego regresa aquí para iniciar sesión
-                </p>
-                <p className="mt-2 font-medium text-green-800">
-                  📝 No olvides tu rol: Doctor o Auxiliar
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-yellow-800 mb-2">
-                🎯 Usuarios de demostración
-              </h3>
-              <div className="text-xs text-yellow-700 space-y-1">
-                <p><strong>Doctor:</strong> ana.garcia@animalsweet.com / demo123</p>
-                <p><strong>Auxiliar:</strong> maria.lopez@animalsweet.com / demo123</p>
-                <p className="mt-2 text-yellow-600">
-                  <strong>⚡ Modo demo activo</strong> - Supabase no configurado
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

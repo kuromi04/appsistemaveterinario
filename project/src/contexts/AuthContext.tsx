@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { Database } from '../types/database';
-import { supabase, isSupabaseConfigured, handleSupabaseError, clearStaleSession } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, handleSupabaseError, clearStaleSession, testSupabaseConnection } from '../lib/supabase';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -355,22 +355,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signIn = async (email: string, password: string) => {
     // Check for Supabase connectivity
-    let supabaseAvailable = false;
-    if (isSupabaseConfigured() && supabase) {
-      try {
-        // Quick connectivity test
-        await Promise.race([
-          supabase.auth.getSession(),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Connection timeout')), 3000)
-          )
-        ]);
-        supabaseAvailable = true;
-      } catch (error) {
-        console.log('Supabase unavailable, using demo mode for signin:', error);
-        supabaseAvailable = false;
-      }
-    }
+    const supabaseAvailable = await testSupabaseConnection();
 
     if (!supabaseAvailable) {
       // Demo mode login

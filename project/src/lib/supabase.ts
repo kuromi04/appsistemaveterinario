@@ -10,17 +10,78 @@ export const supabase = supabaseUrl && supabaseAnonKey
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true
+      },
+      global: {
+        fetch: (url, options = {}) => {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+          
+          return fetch(url, {
+            ...options,
+            signal: controller.signal
+          }).catch(error => {
+            clearTimeout(timeoutId);
+            console.warn('Supabase request failed, falling back to demo mode:', error);
+            throw error;
+          }).finally(() => {
+            clearTimeout(timeoutId);
+          });
+        }
       }
     })
   : null;
 
 export const isSupabaseConfigured = (): boolean => {
-  return !!(supabaseUrl && supabaseAnonKey && supabase);
+  // Check if environment variables are set and not placeholder values
+  const hasValidUrl = supabaseUrl && 
+    supabaseUrl !== 'https://ewponwghhzgngbsayeuv.supabase.co' && 
+    !supabaseUrl.includes('your-project-id');
+  
+  const hasValidKey = supabaseAnonKey && 
+    supabaseAnonKey !== 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3cG9ud2doaHpnbmdic2F5ZXV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3MjI0NzEsImV4cCI6MjA2NjI5ODQ3MX0.60snrYCwbiUwM-1yhgHKjESpGQTIva9io7cS1fEWHbk' &&
+    !supabaseAnonKey.includes('your-anon-key');
+    
+  return !!(hasValidUrl && hasValidKey && supabase);
+};
+
+export const testSupabaseConnection = async (): Promise<boolean> => {
+  if (!isSupabaseConfigured() || !supabase) {
+    return false;
+  }
+
+  try {
+    // Quick connectivity test with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    
+    const { error } = await supabase
+      .from('profiles')
+      .select('count', { count: 'exact', head: true })
+      .abortSignal(controller.signal);
+    
+    clearTimeout(timeoutId);
+    
+    if (error) {
+      console.warn('Supabase connection test failed:', error.message);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.warn('Supabase connection test error:', error);
+    return false;
+  }
 };
 
 export const handleSupabaseError = (error: any): string => {
   if (error?.message) {
     // Handle specific Supabase error messages
+    if (error.message.includes('503') || error.message.includes('Service Unavailable')) {
+      return 'El servicio de Supabase no está disponible. Usando modo demostración.';
+    }
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+      return 'Error de conexión. Verifica tu internet o configuración de Supabase.';
+    }
     if (error.message.includes('User already registered') || error.message.includes('user_already_exists')) {
       return 'Este correo electrónico ya está registrado. Por favor, inicia sesión o usa otro correo.';
     }

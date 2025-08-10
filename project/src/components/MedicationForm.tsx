@@ -24,10 +24,14 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
   // Obtener la fecha y hora actual en formato local
   const getCurrentLocalDateTime = () => {
     const now = new Date();
-    // Ajustar a zona horaria local
-    const offset = now.getTimezoneOffset();
-    const localTime = new Date(now.getTime() - (offset * 60 * 1000));
-    return localTime.toISOString().slice(0, 16);
+    // Formatear directamente en zona horaria local
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const [formData, setFormData] = useState({
@@ -79,18 +83,21 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
   // Actualizar fecha de fin automáticamente (7 días por defecto)
   useEffect(() => {
     if (formData.start_date) {
-      // Crear fecha sin problemas de zona horaria
-      const startDate = new Date(formData.start_date + ':00'); // Agregar segundos
+      // Crear fecha de inicio en zona horaria local
+      const startDate = new Date(formData.start_date);
       const endDate = new Date(startDate);
       endDate.setDate(endDate.getDate() + 7); // 7 días de tratamiento por defecto
       
-      // Ajustar a zona horaria local
-      const offset = endDate.getTimezoneOffset();
-      const localEndTime = new Date(endDate.getTime() - (offset * 60 * 1000));
+      // Formatear fecha de fin en zona horaria local
+      const year = endDate.getFullYear();
+      const month = String(endDate.getMonth() + 1).padStart(2, '0');
+      const day = String(endDate.getDate()).padStart(2, '0');
+      const hours = String(endDate.getHours()).padStart(2, '0');
+      const minutes = String(endDate.getMinutes()).padStart(2, '0');
       
       setFormData(prev => ({
         ...prev,
-        end_date: localEndTime.toISOString().slice(0, 16)
+        end_date: `${year}-${month}-${day}T${hours}:${minutes}`
       }));
     }
   }, [formData.start_date]);
@@ -121,8 +128,8 @@ const MedicationForm: React.FC<MedicationFormProps> = ({
     }
 
     // Validar fechas
-    const startDate = new Date(formData.start_date + ':00');
-    const endDate = new Date(formData.end_date + ':00');
+    const startDate = new Date(formData.start_date);
+    const endDate = new Date(formData.end_date);
     
     if (endDate <= startDate) {
       setError('La fecha de fin debe ser posterior a la fecha de inicio');

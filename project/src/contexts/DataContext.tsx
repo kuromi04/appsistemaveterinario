@@ -95,21 +95,20 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Probar conexión a Supabase al inicializar
   useEffect(() => {
     const testConnection = async () => {
-      if (!isSupabaseConfigured() || !supabase) {
+      if (!isSupabaseConfigured()) {
         console.log('Supabase no está configurado, usando modo demostración');
         setSupabaseAvailable(false);
         return;
       }
 
       try {
-        // Intentar una consulta simple para probar la conexión
-        const { error } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
-        if (error) {
-          console.log('Supabase no está disponible, usando modo demostración:', error.message);
-          setSupabaseAvailable(false);
-        } else {
+        const isConnected = await testSupabaseConnection();
+        if (isConnected) {
           console.log('Supabase conectado exitosamente');
           setSupabaseAvailable(true);
+        } else {
+          console.log('Supabase no está disponible, usando modo demostración');
+          setSupabaseAvailable(false);
         }
       } catch (error) {
         console.log('Error probando conexión a Supabase, usando modo demostración:', error);
