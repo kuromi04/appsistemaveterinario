@@ -8,9 +8,8 @@ import {
   TestTube2,
   Stethoscope,
   Activity,
-  Zap,
-  Shield
-} from 'lucide-react';
+    Shield
+  } from 'lucide-react';
 
 const Specialties: React.FC = () => {
   const specialties = [

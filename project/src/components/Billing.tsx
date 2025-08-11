@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, Plus, Search, Filter, Package, TrendingUp, TrendingDown, Trash2, AlertTriangle, Edit, MoreVertical } from 'lucide-react';
+import { DollarSign, Plus, Search, Package, TrendingUp, TrendingDown, Trash2, AlertTriangle, Edit } from 'lucide-react';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
 import BillingForm from './BillingForm';

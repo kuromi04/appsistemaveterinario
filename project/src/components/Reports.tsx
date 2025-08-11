@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useData } from '../contexts/DataContext';
-import { BarChart, LineChart, PieChart, Download, Calendar, TrendingUp, TrendingDown, DollarSign, Users, Activity } from 'lucide-react';
+import { BarChart, LineChart, PieChart, Download, Calendar, TrendingUp, TrendingDown, Users, Activity } from 'lucide-react';
 
 const Reports: React.FC = () => {
   const { patients, medications, administrations, budgetTransactions } = useData();
@@ -225,8 +225,8 @@ const Reports: React.FC = () => {
             Estado de Pacientes
           </h3>
           <div className="space-y-3">
-            {statusData.map((item, index) => (
-              <div key={item.status} className="flex items-center justify-between">
+              {statusData.map((item) => (
+                <div key={item.status} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div 
                     className={`w-4 h-4 rounded-full ${

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Heart, Clock, AlertTriangle, CheckCircle, TrendingUp, Activity, Calendar, Users, DollarSign, Pill, FileText, TrendingDown } from 'lucide-react';
+import { Heart, Clock, AlertTriangle, CheckCircle, Activity, Users, DollarSign, Pill, FileText } from 'lucide-react';
 import { useData } from '../contexts/DataContext';
-import { format, isToday, isThisWeek, isYesterday, subDays, startOfWeek, endOfWeek } from 'date-fns';
+import { format, isToday, isYesterday, subDays, startOfWeek, endOfWeek } from 'date-fns';
 import { es } from 'date-fns/locale';
 import MetricCard from './MetricCard';
 import LoadingSpinner from './LoadingSpinner';
@@ -17,9 +17,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onPatientSelect }) => {
   // Enhanced statistics with trends
   const generateAdvancedStats = () => {
     const today = new Date();
-    const yesterday = subDays(today, 1);
-    const weekStart = startOfWeek(today);
-    const weekEnd = endOfWeek(today);
+      const weekStart = startOfWeek(today);
+      const weekEnd = endOfWeek(today);
     const lastWeekStart = subDays(weekStart, 7);
     const lastWeekEnd = subDays(weekEnd, 7);
 
@@ -108,13 +107,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onPatientSelect }) => {
     );
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'critico': return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-700';
-      case 'hospitalizado': return 'bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 border-primary-200 dark:border-primary-700';
-      default: return 'bg-secondary-100 dark:bg-secondary-900/30 text-secondary-800 dark:text-secondary-300 border-secondary-200 dark:border-secondary-700';
-    }
-  };
 
   const handleQuickAction = (action: string) => {
     // Create a custom event to trigger navigation

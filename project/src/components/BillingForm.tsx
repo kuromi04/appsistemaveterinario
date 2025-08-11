@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { X, Save, DollarSign } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import CurrencyInput from './CurrencyInput';
 
 interface BillingFormProps {
   onClose: () => void;

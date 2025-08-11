@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { Calendar, Clock, Save, X, Pill, User, AlertCircle } from 'lucide-react';
+import { Calendar, Save, X, Pill, AlertCircle } from 'lucide-react';
 
 interface AdministrationFormProps {
   patientId: string;
@@ -101,22 +101,24 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
     // Encontrar el horario programado más cercano
     let closestScheduledTime: Date | null = null;
     let minTimeDiff = Infinity;
-    
+
     scheduledTimes.forEach(time => {
       const [hours, minutes] = time.split(':').map(Number);
       const scheduledTime = new Date(adminDate);
       scheduledTime.setHours(hours, minutes, 0, 0);
-      
+
       const timeDiff = Math.abs(adminDate.getTime() - scheduledTime.getTime());
       if (timeDiff < minTimeDiff) {
         minTimeDiff = timeDiff;
         closestScheduledTime = scheduledTime;
       }
     });
-    
+
+    let scheduledISOString: string | undefined;
     if (closestScheduledTime) {
-      const timeDiffMinutes = (adminDate.getTime() - closestScheduledTime.getTime()) / (1000 * 60);
-      
+      const cst = closestScheduledTime as Date;
+      const timeDiffMinutes = (adminDate.getTime() - cst.getTime()) / (1000 * 60);
+
       if (Math.abs(timeDiffMinutes) <= 15) {
         timingStatus = 'on-time';
       } else if (timeDiffMinutes < -15) {
@@ -124,6 +126,8 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
       } else if (timeDiffMinutes > 15) {
         timingStatus = 'late';
       }
+
+      scheduledISOString = new Date(cst.getTime() - (cst.getTimezoneOffset() * 60000)).toISOString();
     }
 
     setIsLoading(true);
@@ -132,9 +136,6 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
     try {
       // Convertir a formato ISO manteniendo zona horaria local
       const adminISOString = new Date(adminDate.getTime() - (adminDate.getTimezoneOffset() * 60000)).toISOString();
-      const scheduledISOString = closestScheduledTime ? 
-        new Date(closestScheduledTime.getTime() - (closestScheduledTime.getTimezoneOffset() * 60000)).toISOString() : 
-        null;
 
       await addAdministration({
         medication_id: medicationId,
@@ -146,7 +147,7 @@ const AdministrationForm: React.FC<AdministrationFormProps> = ({
         status: formData.status,
         cost: formData.cost,
         scheduled_time: scheduledISOString,
-        timing_status: timingStatus
+        timing_status: timingStatus || undefined
       });
 
       // Crear entrada en el kardex

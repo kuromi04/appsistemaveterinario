@@ -46,7 +46,7 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ patient, medications, admin
     yPosition += 7;
     doc.text(`Propietario: ${patient.owner}`, 20, yPosition);
     yPosition += 7;
-    doc.text(`Teléfono: ${patient.ownerPhone}`, 20, yPosition);
+      doc.text(`Teléfono: ${patient.owner_phone}`, 20, yPosition);
     yPosition += 7;
     doc.text(`Jaula: ${patient.cage}`, 20, yPosition);
     yPosition += 7;
@@ -116,7 +116,7 @@ const PDFGenerator: React.FC<PDFGeneratorProps> = ({ patient, medications, admin
     }
 
     // Footer
-    const pageCount = doc.internal.getNumberOfPages();
+      const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
       doc.setFontSize(10);

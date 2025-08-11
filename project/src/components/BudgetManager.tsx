@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { useAuth } from '../contexts/AuthContext';
-import { DollarSign, Plus, Minus, FileText, TrendingUp, TrendingDown } from 'lucide-react';
+import { DollarSign, Plus, Minus, FileText, TrendingUp } from 'lucide-react';
 import LoadingSpinner from './LoadingSpinner';
 
 const BudgetManager: React.FC = () => {
@@ -10,11 +10,11 @@ const BudgetManager: React.FC = () => {
   const { addBudgetTransaction, budgetTransactions, updatePatient, getPatient } = useData();
   const { user } = useAuth();
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    type: 'deposit' as const,
-    amount: '',
-    description: ''
-  });
+    const [formData, setFormData] = useState<{ type: 'deposit' | 'charge' | 'refund' | 'adjustment'; amount: string; description: string }>({
+      type: 'deposit',
+      amount: '',
+      description: ''
+    });
 
   if (!patientId) {
     return (

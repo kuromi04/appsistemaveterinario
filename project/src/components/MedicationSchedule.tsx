@@ -3,7 +3,7 @@ import { Clock, Check, X, User, AlertCircle, Calendar, Pill, Edit2, Save, XCircl
 import { Medication } from '../types';
 import { useData } from '../contexts/DataContext';
 import { users } from '../data/mockData';
-import { format, addHours, isAfter, isBefore, differenceInMinutes, parseISO } from 'date-fns';
+import { format, addHours, isAfter, isBefore, differenceInMinutes } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useAuth } from '../contexts/AuthContext';
 import AdministrationForm from './AdministrationForm';
@@ -370,21 +370,21 @@ const MedicationSchedule: React.FC<MedicationScheduleProps> = ({
       </div>
 
       {/* Formulario de administración */}
-      {showAdministrationForm && selectedSchedule && (
-        <AdministrationForm
-          medication={medication}
-          scheduledTime={selectedSchedule.scheduled_time}
-          onClose={() => {
-            setShowAdministrationForm(false);
-            setSelectedSchedule(null);
-          }}
-          onSuccess={() => {
-            setShowAdministrationForm(false);
-            setSelectedSchedule(null);
-            onAdministrationComplete();
-          }}
-        />
-      )}
+        {showAdministrationForm && selectedSchedule && (
+          <AdministrationForm
+            patientId={medication.patient_id}
+            medicationId={medication.id}
+            onSubmit={() => {
+              setShowAdministrationForm(false);
+              setSelectedSchedule(null);
+              onAdministrationComplete();
+            }}
+            onCancel={() => {
+              setShowAdministrationForm(false);
+              setSelectedSchedule(null);
+            }}
+          />
+        )}
     </div>
   );
 };

@@ -30,7 +30,7 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
     });
   };
 
-  const uploadFile = async (file: File) => {
+    const uploadFile = async (file: File) => {
     setIsUploading(true);
 
     try {
@@ -57,14 +57,13 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
       updatePatient(patient.id, { files: updatedFiles });
 
       // Add kardex entry
-      addKardexEntry({
-        patient_id: patient.id,
-        type: 'archivo',
-        content: `Archivo subido: ${file.name} (${getFileTypeText(fileType)})`,
-        created_by: user?.id || '',
-        created_at: new Date().toISOString(),
-        related_file_id: newFile.id
-      });
+        addKardexEntry({
+          patient_id: patient.id,
+          type: 'archivo',
+          content: `Archivo subido: ${file.name} (${getFileTypeText(fileType)})`,
+          created_by: user?.id || '',
+          related_file_id: newFile.id
+        });
 
       onUpdate();
     } catch (error) {
@@ -75,7 +74,7 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
     }
   };
 
-  const getFileType = (file: File): PatientFile['fileType'] => {
+    const getFileType = (file: File): PatientFile['file_type'] => {
     const type = file.type.toLowerCase();
     const name = file.name.toLowerCase();
 
@@ -87,7 +86,7 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
     return 'other';
   };
 
-  const getFileTypeText = (type: PatientFile['fileType']) => {
+    const getFileTypeText = (type: PatientFile['file_type']) => {
     switch (type) {
       case 'image': return 'Imagen';
       case 'document': return 'Documento';
@@ -98,7 +97,7 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
     }
   };
 
-  const getFileIcon = (type: PatientFile['fileType']) => {
+    const getFileIcon = (type: PatientFile['file_type']) => {
     switch (type) {
       case 'image':
       case 'xray':
@@ -111,7 +110,7 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
     }
   };
 
-  const getFileTypeColor = (type: PatientFile['fileType']) => {
+    const getFileTypeColor = (type: PatientFile['file_type']) => {
     switch (type) {
       case 'image': return 'text-primary-600 dark:text-primary-400';
       case 'xray': return 'text-accent-600 dark:text-accent-400';
@@ -137,13 +136,12 @@ const FileManager: React.FC<FileManagerProps> = ({ patient, onClose, onUpdate })
 
     const deletedFile = patient.files.find(f => f.id === fileId);
     if (deletedFile) {
-      addKardexEntry({
-        patient_id: patient.id,
-        type: 'archivo',
-        content: `Archivo eliminado: ${deletedFile.file_name}`,
-        created_by: user?.id || '',
-        created_at: new Date().toISOString()
-      });
+        addKardexEntry({
+          patient_id: patient.id,
+          type: 'archivo',
+          content: `Archivo eliminado: ${deletedFile.file_name}`,
+          created_by: user?.id || ''
+        });
     }
 
     onUpdate();
